@@ -1,7 +1,8 @@
 # ir-project
 
-- [ ] preprocess: raw, stopword+stem, GPT
-- [ ] vectorize: tf, word2vec, (or both)
-- [ ] classification: bayesian
+- [x] Dataset: [lrclib-dump](https://huggingface.co/datasets/ernestchu/lrclib-20250319)
+- [ ] Preprocess: raw, stopword+stem, GPT
+- [ ] Vectorize: tf, word2vec, (or both)
+- [ ] Classification: bayesian
 - [ ] Assessable task: mood classification, in-lyric search
-- [ ] apps: song recommendation (single track, playlist)
+- [ ] Apps: song recommendation (single track, playlist)
