@@ -1,7 +1,7 @@
 # ir-project
 
 - [x] Dataset: [lrclib-dump](https://huggingface.co/datasets/ernestchu/lrclib-20250319)
-- [ ] Preprocess: raw, stopword+stem, GPT
+- [ ] Preprocess: raw, stopword+stem, LLM (dedup, summarize)
 - [ ] Vectorize: tf, word2vec, (or both)
 - [ ] Classification: bayesian
 - [ ] Assessable task: mood classification, in-lyric search
