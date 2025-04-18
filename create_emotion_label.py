@@ -1,40 +1,42 @@
 import numpy as np
 import pandas as pd
-import os
-import math
-
 import openai
 import time
 import json
 from tqdm import tqdm
-
 from datasets import load_dataset
 
 
-ds = load_dataset("ernestchu/lrclib-20250319", "default")
+CHUNK_START = 27000
+CHUNK_END = 30000
+LABELS_PATH = "emotion_labels_by_id.json"
+RAW_LYRICS_PATH = "raw_lyrics_by_id.json"
 
-
-
-lyrics_data = ds["train"]
-raw_lyrics = [example["plain_lyrics"] for example in lyrics_data if example["has_plain_lyrics"]]
+client = openai.OpenAI(api_key='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')
 
 
 try:
-    with open("emotion_labels.json", "r") as f:
+    with open(LABELS_PATH, "r") as f:
         emotion_labels = json.load(f)
 except FileNotFoundError:
     emotion_labels = {}
 
+try:
+    with open(RAW_LYRICS_PATH, "r") as f:
+        raw_lyrics = json.load(f)
+except FileNotFoundError:
+    raw_lyrics = {}
 
 
+ds = load_dataset("ernestchu/lrclib-20250319", split="train")
+ds_chunk = ds.select(range(CHUNK_START, CHUNK_END))
+ds_chunk = ds_chunk.filter(lambda x: x["has_plain_lyrics"])
 
-client = openai.OpenAI(api_key='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') 
 
-def classify_emotion_with_clusters(lyrics_text):
+def classify_emotion_gpt(lyrics):
     prompt = (
         "Given the following song lyrics, identify the primary emotion or mood expressed. "
-        "Choose only one from the list below that best represents the emotion. "
-        "Return only the single word label (e.g. 'cheerful', 'calm', 'frustrated') with one key word from the cluster description that best describe the mood of the lyrics\n\n"
+        "Choose only one word from the list below that best matches the mood. Do not invent new words.\n\n"
         "Mood Clusters:\n"
         "1. awe-inspiring, dignified, lofty, sacred, serious, sober, solemn, spiritual\n"
         "2. dark, depressing, doleful, frustrated, gloomy, heavy, melancholy, mournful, pathetic, sad, tragic\n"
@@ -44,40 +46,42 @@ def classify_emotion_with_clusters(lyrics_text):
         "6. bright, cheerful, gay, happy, joyous, merry\n"
         "7. agitated, dramatic, exciting, exhilarated, impetuous, passionate, restless, sensational, soaring, triumphant\n"
         "8. emphatic, exalting, majestic, martial, ponderous, robust, vigorous\n\n"
-        "make sure the words you assign to each id is present in the clusters above do not give words that are not present in the cluster description"
-        f"Lyrics:\n{lyrics_text}\n\n"
+        f"Lyrics:\n{lyrics}\n"
+        "Label:"
     )
-
     try:
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.0,
-            max_tokens=20,
+            max_tokens=10
         )
         return response.choices[0].message.content.strip().lower()
     except Exception as e:
-        print("Error:", e)
+        print(f"OpenAI error: {e}")
         return None
 
 
+try:
+    for d in tqdm(ds_chunk, desc="Labeling lyrics"):
+        track_id = str(d["id"])
+        if track_id in emotion_labels:
+            continue  
+        lyrics = d["plain_lyrics"]
+        label = classify_emotion_gpt(lyrics)
+        if label:
+            emotion_labels[track_id] = label
+            raw_lyrics[track_id] = lyrics
 
-for i, lyric in tqdm(enumerate(raw_lyrics), total=len(raw_lyrics)):
-    if str(i) in emotion_labels:
-        continue  
+        time.sleep(0.7)  
 
-    emotion = classify_emotion_with_clusters(lyric)
-    emotion_labels[str(i)] = emotion
-    print(f"{i}: {emotion}")
+except KeyboardInterrupt:
+    print("Interrupted — saving...")
 
-    if i % 10 == 0:
-        with open("emotion_labels.json", "w") as f:
-            json.dump(emotion_labels, f, indent=2)
+finally:
+    with open(LABELS_PATH, "w") as f:
+        json.dump(emotion_labels, f, indent=2)
+    with open(RAW_LYRICS_PATH, "w") as f:
+        json.dump(raw_lyrics, f, indent=2)
 
-    time.sleep(1.1) 
-
-
-# Final save
-with open("emotion_labels.json", "w") as f:
-    json.dump(emotion_labels, f, indent=2)
-
+    print(f"Done. {len(emotion_labels)} tracks.")
