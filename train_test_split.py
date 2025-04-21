@@ -2,10 +2,10 @@ import json
 from sklearn.model_selection import train_test_split
 
 # Load data
-with open("raw_lyrics.json", "r") as f:
+with open("cleaned_lyrics_strict.json", "r") as f:
     raw_lyrics = json.load(f)
 
-with open("emotion_labels.json", "r") as f:
+with open("cluster_labels.json", "r") as f:
     label_dict = json.load(f)
 
 with open("song_names.json", "r") as f:
