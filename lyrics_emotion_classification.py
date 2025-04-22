@@ -47,6 +47,7 @@ class Word2VecSKL(BaseEstimator, TransformerMixin):
         X = [x.lower().split() for x in X]
         self.model = self.model(X, **self.model_kwargs)
         self.dim = self.model.vector_size
+        self.model = self.model.wv
         return self
 
     def transform(self, X):
@@ -54,10 +55,7 @@ class Word2VecSKL(BaseEstimator, TransformerMixin):
         for doc in X:
             words = doc.lower().split()
             # collect vectors for words in our vocab
-            if isinstance(self.model, Word2Vec):
-                good_words = [self.model.wv[w] for w in words if w in self.model.wv]
-            else:
-                good_words = [self.model[w] for w in words if w in self.model]
+            good_words = [self.model[w] for w in words if w in self.model]
             if good_words:
                 vecs.append(np.mean(good_words, axis=0))
             else:
