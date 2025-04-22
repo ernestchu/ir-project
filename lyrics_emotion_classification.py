@@ -3,6 +3,7 @@ import re
 
 import numpy as np
 from datasets import load_dataset
+import gensim.downloader
 from gensim.models import Word2Vec
 # from nltk.tokenize import word_tokenize
 # from nltk.corpus import stopwords
@@ -32,11 +33,17 @@ def get_tfidf_mnb_pipeline():
     ])
 
 class Word2VecSKL(BaseEstimator, TransformerMixin):
-    def __init__(self, model, model_kwargs):
+    def __init__(self, model, pretrained_model, model_kwargs):
         self.model = model
+        self.pretrained_model = pretrained_model
         self.model_kwargs = model_kwargs
 
     def fit(self, X, y=None):
+        if self.pretrained_model is not None:
+            # Load the pretrained model
+            self.model = gensim.downloader.load(self.pretrained_model)
+            self.dim = self.model.vector_size
+            return self
         X = [x.lower().split() for x in X]
         self.model = self.model(X, **self.model_kwargs)
         self.dim = self.model.vector_size
@@ -47,7 +54,10 @@ class Word2VecSKL(BaseEstimator, TransformerMixin):
         for doc in X:
             words = doc.lower().split()
             # collect vectors for words in our vocab
-            good_words = [self.model.wv[w] for w in words if w in self.model.wv]
+            if isinstance(self.model, Word2Vec):
+                good_words = [self.model.wv[w] for w in words if w in self.model.wv]
+            else:
+                good_words = [self.model[w] for w in words if w in self.model]
             if good_words:
                 vecs.append(np.mean(good_words, axis=0))
             else:
@@ -55,8 +65,8 @@ class Word2VecSKL(BaseEstimator, TransformerMixin):
                 vecs.append(np.zeros(self.dim, dtype=float))
         return np.vstack(vecs)
 
-def get_word2vec_gnb_pipeline():
-    vec = Word2VecSKL(Word2Vec, {
+def get_word2vec_gnb_pipeline(pretrained_model=None):
+    vec = Word2VecSKL(Word2Vec, pretrained_model, {
         'vector_size': 100,   # dimensionality of the embeddings
         'window': 5,
         'min_count': 2,       # ignore very rare words
@@ -77,6 +87,7 @@ test_data = ds["test"]
 pipelines = {
     "tfidf-mnb": get_tfidf_mnb_pipeline(),
     "word2vec-gnb": get_word2vec_gnb_pipeline(),
+    "word2vec-gnb-google-news-300": get_word2vec_gnb_pipeline('word2vec-google-news-300'),
 }
 
 for pipe in  pipelines:
