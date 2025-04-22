@@ -1,5 +1,7 @@
 import json
 import re
+
+from datasets import load_dataset
 from sklearn.feature_extraction.text import TfidfVectorizer
 from gensim.models import Word2Vec
 from nltk.tokenize import word_tokenize
@@ -11,11 +13,10 @@ nltk.download("punkt_tab")
 nltk.download("stopwords")
 
 # === Load Data ===
-with open("train_split.json", "r") as f:
-    train_data = json.load(f)
-
-with open("test_split.json", "r") as f:
-    test_data = json.load(f)
+ds = load_dataset("ernestchu/lyrics-emotion-classification")
+train_data = ds["train"]
+dev_data = ds["dev"]
+test_data = ds["test"]
 
 # tokenize 
 stop_words = set(stopwords.words("english"))

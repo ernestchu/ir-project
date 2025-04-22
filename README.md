@@ -1,6 +1,6 @@
 # ir-project
 
-- [x] Dataset: [lrclib-dump](https://huggingface.co/datasets/ernestchu/lrclib-20250319)
+- [x] Dataset: [lrclib-dump](https://huggingface.co/datasets/ernestchu/lrclib-20250319), [lyrics-emotion-classification](https://huggingface.co/datasets/ernestchu/lyrics-emotion-classification)
 - [ ] Preprocess: raw, stopword+stem, LLM (dedup, summarize)
 - [ ] Vectorize: tf, word2vec, (or both)
 - [ ] Classification: bayesian
@@ -13,27 +13,16 @@ code step:
 emotion word for the song that has plain lyrics as well as the corresponding raw_lyrics for the song
 generate: emotion_labels.json, raw_lyrics.json
 
+2. run make_emotion_dataset.py to perform data preprocessing and upload the [dataset](https://huggingface.co/datasets/ernestchu/lyrics-emotion-classification) to HF. Preprocess steps:
+    1. remove exact duplicates and the lyrics that differs only by puntuation but is essentially the same song using cosine similarity
+    2. remove non english songs according to the lyrics
+    3. remove all punctuations for lyrics
+    4. get song metadata, split the dataset into train/dev/test and upload to HF
 
 
-2. run preprocess.py to remove non english songs according to the lyrics as well as exact duplicates
-generate: cleaned_label.json, cleaned_lyrics.json  
+run project.py to create model for info retreival 
 
-3. run preprocess2.py to remove the lyrics that differs only by punctuation but is essentially the same 
-    song using cosine similarity
-generate: cleaned_label_cosine.json, cleaned_lyrics cosine.json  
-
-4. run process3.py to remove all punctuations for lyrics, extract the label for testing, and get corresponding song names for the ids
-generate: cleaned_lyrics_strict.json, cluster_labels.json (pure song id: label, no emotion word), song_name.json
-
-
-5. run train_test_split.py to get training and testing data
-generate:
-
-run proj.py to create model for info retreival 
-
-
-
-(use 32000 samples from data, after preprocess we have 17985 unique songs )
+(use 37473 samples from data, after preprocess we have 20229 unique English songs )
 
 
 limitation:
