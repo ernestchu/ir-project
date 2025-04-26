@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- Search Bar -->
     <header
       :class="[
         'w-full bg-white transition-all ease-in-out',
@@ -9,9 +8,26 @@
           : 'h-screen flex items-center justify-center'
       ]"
     >
-      <div class="w-full max-w-xl px-4">
+      <div class="w-full max-w-xl px-4"
+        :class="hasSearched
+          ? 'flex items-center space-x-4'
+          : 'flex flex-col items-center justify-center space-y-4 h-full'"
+      >
+        <!-- Logo -->
+        <img
+          src="/logo/logo.svg"
+          alt="My App Logo"
+          class="mx-auto"
+          :class="hasSearched
+            ? 'h-10 cursor-pointer'
+            : 'mb-20 h-40'"
+          onclick="location.reload()"
+        />
+
+        <!-- Search Input -->
         <input
           v-model="query"
+          autofocus
           @keyup.enter="onSearch"
           :placeholder="hasSearched
             ? 'Search again…'
