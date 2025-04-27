@@ -2,6 +2,10 @@
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
+## TODO
+- longest common substring
+- term frequency upper bound
+
 ## Setup
 
 Make sure to install dependencies:
