@@ -4,8 +4,10 @@ Depoly at https://ernestchu.github.io/ir-project/
 Backend: https://huggingface.co/spaces/ernestchu/lyric-search
 
 ## TODO
-- longest common substring
-- term frequency upper bound
+- [x] longest common substring
+- [ ] term frequency upper bound
+- [ ] Scroll to top after search
+- [ ] add clear search bar button
 
 ## Setup
 
