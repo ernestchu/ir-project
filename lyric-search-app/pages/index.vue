@@ -31,6 +31,8 @@
             v-model="query"
             autofocus
             @keyup.enter="onSearch"
+            @compositionstart="IMEIsComposing = true"
+            @compositionend="IMECompositionEnd"
             :placeholder="hasSearched
               ? 'Search again…'
               : 'Search lyrics, song, artist…'"
@@ -134,6 +136,13 @@ const tracks       = ref([])
 const page         = ref(0)
 const isLoading    = ref(false)
 const hasSearched  = ref(false)
+const IMEIsComposing  = ref(false)
+
+function IMECompositionEnd() {
+  setTimeout(() => {
+    IMEIsComposing.value = false
+  }, 100)
+}
 
 const selectedTrack = ref(null)
 const tab           = ref('plain')
@@ -165,7 +174,7 @@ function clearQuery() {
 
 // user hits Enter
 async function onSearch() {
-  if (!query.value.trim()) return
+  if (IMEIsComposing.value || !query.value.trim()) return
 
   hasSearched.value = true
   page.value        = 0
