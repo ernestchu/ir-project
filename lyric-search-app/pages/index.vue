@@ -25,16 +25,31 @@
         />
 
         <!-- Search Input -->
-        <input
-          v-model="query"
-          autofocus
-          @keyup.enter="onSearch"
-          :placeholder="hasSearched
-            ? 'Search again…'
-            : 'Search lyrics, song, artist…'"
-          class="w-full border border-gray-300 rounded-lg px-4 py-2
-                 focus:outline-none focus:ring focus:border-blue-300"
-        />
+        <div class="relative w-full">
+          <input
+            ref="searchInput"
+            v-model="query"
+            autofocus
+            @keyup.enter="onSearch"
+            :placeholder="hasSearched
+              ? 'Search again…'
+              : 'Search lyrics, song, artist…'"
+            class="w-full border border-gray-300 rounded-lg px-4 py-2
+                   focus:outline-none focus:ring focus:border-blue-300"
+          />
+          <button
+            v-if="query"
+            @click="clearQuery"
+            class="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-600"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div v-if="!hasSearched" class="text-gray-400 text-xs my-5">
+          Python-based search engine on a cheap server. Search results may take a while to load. Please be patient.
+        </div>
       </div>
     </header>
 
@@ -57,16 +72,8 @@
       </div>
 
       <!-- Loading Spinner -->
-      <div v-if="isLoading" class="flex justify-center py-6">
-        <svg
-          class="animate-spin h-8 w-8 text-gray-600"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" class="opacity-25"/>
-          <path fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" class="opacity-75"/>
-        </svg>
+      <div v-if="isLoading" class="flex justify-center">
+        <Spinner />
       </div>
     </main>
 
@@ -148,6 +155,14 @@ onBeforeUnmount(() => {
   window.removeEventListener('scroll', onScroll)
 })
 
+// clear search input
+const searchInput = ref(null);
+
+function clearQuery() {
+  query.value = '';
+  searchInput.value?.focus();
+}
+
 // user hits Enter
 async function onSearch() {
   if (!query.value.trim()) return
@@ -156,6 +171,8 @@ async function onSearch() {
   page.value        = 0
   tracks.value      = []
   isLoading.value   = true
+  window.scrollTo({top: 0, behavior: 'instant'})
+  searchInput.value?.blur();
 
   try {
     const { data } = await grClient.predict('/search', { query: query.value })
