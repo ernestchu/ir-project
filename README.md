@@ -28,10 +28,61 @@ generate: emotion_labels.json, raw_lyrics.json
 Accuracy: 0.5269
 
 
-limitation:
+
+
+Permutation description:
+
+
+Features Used:
+    TF-IDF: Bag-of-words based frequency representation using Scikit-learn’s TfidfVectorizer
+
+    Word2Vec: Trainable embeddings using Gensim's Word2Vec
+
+    Doc2Vec: Paragraph embeddings trained using Gensim's Doc2Vec
+
+    SBERT: Sentence embeddings from all-mpnet-base-v2 (SentenceTransformers)
+
+
+classifier models:
+    Logistic Regression:
+    SVM: RBF kernel, Linear kernel
+        
+    Naive Bayes
+    Ranfdom Forest
+    Xgboost
+    LightGBM
+    Voting Stacked model
+
+
+
+
+
+
+nlp preprocessing:
+stanza from standform 
+
+
+
+Emotion Lexicons:
+NRC Emotion Lexicon (Mohammad & Turney, 2013)
+Provides binary word-to-emotion associations for 8 emotions.
+
+VADER Valence Lexicon
+Captures Valence scores used in social media sentiment analysis.
+
+Warriner VAD Lexicon (Warriner et al., 2013)
+Provides continuous Valence, Arousal, and Dominance scores for ~14,000 English words.
+
+
+
+
+
+Limitation:
 only retreive and classify english lyrics, can further process non english songs
 
 use gpt to create label, only considering the lyrics, can further expand the project
 using wave2vec to cluster songs using the actaul music audio to make the classification more robust.
 
 use other lassifier to model the songs
+
+classification and reccomendation is restricted to the format of the dataset we get, future approach can be done by connecting to api to fetch 

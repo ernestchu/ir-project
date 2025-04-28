@@ -19,7 +19,15 @@ logs
 .fleet
 .idea
 
+#python virtual environments
+.venv/
+.venv*/
+
 # Local env files
 .env
 .env.*
 !.env.example
+
+best_emotion_model.pkl
+
+
