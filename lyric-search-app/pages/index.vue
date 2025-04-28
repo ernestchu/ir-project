@@ -34,7 +34,7 @@
             :placeholder="hasSearched
               ? 'Search again…'
               : 'Search lyrics, song, artist…'"
-            class="w-full border border-gray-300 rounded-lg px-4 py-2
+            class="w-full border border-gray-300 rounded-lg pl-4 pr-10 py-2
                    focus:outline-none focus:ring focus:border-blue-300"
           />
           <button
@@ -65,9 +65,9 @@
         class="bg-white p-4 rounded-lg shadow cursor-pointer hover:shadow-lg transition"
       >
         <h2 class="text-lg font-semibold">
-          {{ track.trackName }} – {{ track.artistName }}
+          {{ track.artistName }} - {{ track.trackName }}
         </h2>
-        <p class="text-sm text-gray-500 mb-2">{{ track.albumName }}</p>
+        <p class="text-sm text-gray-500 mb-2">{{ track.albumName }} &nbsp;&nbsp;&nbsp;&nbsp; {{ track.score.toFixed(2) }}/{{track.lcs}}</p>
         <p class="text-sm line-clamp-3">{{ track.plainLyrics }}</p>
       </div>
 
