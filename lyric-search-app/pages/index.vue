@@ -45,7 +45,7 @@
     <main class="max-w-xl mx-auto space-y-4 px-4">
       <div
         v-for="track in tracks"
-        :key="track.id + '-' + track.score"
+        :key="track.id"
         @click="selectTrack(track)"
         class="bg-white p-4 rounded-lg shadow cursor-pointer hover:shadow-lg transition"
       >
@@ -177,10 +177,10 @@ async function fetchResults() {
   try {
     const slice = rawResults.value.slice(start, start + 10)
     const metas = await Promise.all(
-      slice.map(async ([id, score]) => {
+      slice.map(async ([id, score, lcs]) => {
         const res  = await fetch(`https://lrclib.net/api/get/${id}`)
         const json = await res.json()
-        return { ...json, score }
+        return { ...json, score, lcs }
       })
     )
     tracks.value.push(...metas)
