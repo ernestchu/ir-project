@@ -5,9 +5,10 @@ Backend: https://huggingface.co/spaces/ernestchu/lyric-search
 
 ## TODO
 - [x] longest common substring
+- [x] Scroll to top after search
+- [x] add clear search bar button
 - [ ] term frequency upper bound
-- [ ] Scroll to top after search
-- [ ] add clear search bar button
+- [ ] Randomly sample 10,000 songs. For each song, randomly select a snippet of lyrics. Then, use our app to search with the snippet and evaluate whether the correct song appears within the top-k ranked search results.
 
 ## Setup
 
