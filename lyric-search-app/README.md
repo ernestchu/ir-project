@@ -1,6 +1,7 @@
-# Nuxt Minimal Starter
+# Lyric Search
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Depoly at https://ernestchu.github.io/ir-project/
+Backend: https://huggingface.co/spaces/ernestchu/lyric-search
 
 ## TODO
 - longest common substring
