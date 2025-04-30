@@ -4,7 +4,7 @@ Depolyed at https://ernestchu.github.io/ir-project/
 Backend: https://huggingface.co/spaces/ernestchu/lyric-search
 
 ## TODO
-- [x] longest common substring
+- [x] longest common subsequence
 - [x] Scroll to top after search
 - [x] add clear search bar button
 - [ ] term frequency upper bound
