@@ -1,3 +1,0 @@
-[submodule "lyric-search-engine/lyric-search"]
-	path = lyric-search-engine/lyric-search
-	url = https://huggingface.co/spaces/ernestchu/lyric-search
