@@ -1,6 +1,6 @@
 # Lyric Search
 
-Depoly at https://ernestchu.github.io/ir-project/  
+Depolyed at https://ernestchu.github.io/ir-project/  
 Backend: https://huggingface.co/spaces/ernestchu/lyric-search
 
 ## TODO
