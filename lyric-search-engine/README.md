@@ -8,7 +8,7 @@ Backend: https://huggingface.co/spaces/ernestchu/lyric-search
 - [x] longest common subsequence
 - [x] Scroll to top after search
 - [x] add clear search bar button
-- [x] Randomly sample 10,000 songs. For each song, randomly select a snippet of lyrics. Then, use our app to search with the snippet and evaluate whether the correct song appears within the top-k ranked search results.
+- [x] Randomly sample 1,000 [songs](https://huggingface.co/datasets/ernestchu/lrclib-20250319/viewer/random-1k). For each song, randomly select a snippet of lyrics. Then, use our app to search with the snippet and evaluate whether the correct song appears within the top-k ranked search results.
 - [x] Add [Latent Semantic Indexing](https://radimrehurek.com/gensim/auto_examples/core/run_topics_and_transformations.html)
 - [ ] term frequency upper bound
 
