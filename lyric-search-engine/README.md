@@ -1,7 +1,7 @@
 # Lyric Search
 
-Depolyed at https://ernestchu.github.io/lyric-search/  
-Frontend: https://github.com/ernestchu/lyric-search 
+Depolyed at https://ernestchu.github.io/lyric-search  
+Frontend: https://github.com/ernestchu/lyric-search  
 Backend: https://huggingface.co/spaces/ernestchu/lyric-search
 
 ## TODO
