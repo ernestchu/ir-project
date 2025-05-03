@@ -1,0 +1,6 @@
+[submodule "lyric-search-engine/frontend"]
+	path = lyric-search-engine/frontend
+	url = https://github.com/ernestchu/lyric-search
+[submodule "lyric-search-engine/backend"]
+	path = lyric-search-engine/backend
+	url = https://huggingface.co/spaces/ernestchu/lyric-search
