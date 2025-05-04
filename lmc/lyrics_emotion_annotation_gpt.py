@@ -12,7 +12,7 @@ CHUNK_END = 30000
 LABELS_PATH = "emotion_labels_by_id.json"
 RAW_LYRICS_PATH = "raw_lyrics_by_id.json"
 
-client = openai.OpenAI(api_key='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')
+client = openai.OpenAI()
 
 
 try:
